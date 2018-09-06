@@ -1,0 +1,13 @@
+MIDI_to_Linkbot.sln
+.DS_Store
+MIDI_to_Linkbot/x64
+MIDI_to_Linkbot/Debug
+*.obj
+*.vcxproj.*
+*.exe
+*.ilk
+*.pdb
+*.sqlite
+*.suo
+*.db
+*.ipch
