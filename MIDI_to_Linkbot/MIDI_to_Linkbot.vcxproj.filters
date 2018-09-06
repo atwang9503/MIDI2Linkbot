@@ -23,7 +23,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MIDI_to_Linkbot.cpp">
+    <ClCompile Include="MIDI_to_Linkbot.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
