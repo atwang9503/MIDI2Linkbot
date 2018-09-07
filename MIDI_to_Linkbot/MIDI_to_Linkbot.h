@@ -322,6 +322,55 @@ typedef enum {
 #define MIDI_DRUM_MUTE_TRIANGLE				80
 #define MIDI_DRUM_OPEN_TRIANGLE				81
 // Credit: https://github.com/MarquisdeGeek/midilib/blob/master/src/midiinfo.h
+// LINKBOT FILE INFORMATION
+
+char* PREAMBLE = \
+"#include <linkbot.h>\n"
+"CLinkbotI robot;\n"
+"note_t ";
+
+char* BODY1 = \
+"(int i) {\n"
+"   int len;\n"
+"   note_t note;\n";
+char* BODY2 = \
+"   note_t song[] = {\n";
+
+char* BODY3 = \
+"   };\n"
+"   len = sizeof(song) / sizeof(note_t);\n"
+"   double timePerNote = songDuration / len;\n"
+"   if (i < len) {\n"
+"   note.frequency = song[i].frequency;\n"
+"   note.duration = (int) (1.00/timePerNote);\n"
+"   } else {\n"
+"   note.frequency = -1;\n"
+"   note.duration = -1;\n"
+"   }\n"
+"   return note;\n"
+"}\n"
+"robot.playMelody(";
+
+// FUNCTION PROTOTYPES
+typedef struct LBFile
+{
+	bool editted; // false by default, set to true when parser touches this file
+	char name[80]; // holds the filename of the file
+	FILE* fileptr; // points to the file that the object writes to
+	unsigned long long int time;
+	bool noteOn; // NoteOn has been written to file with no termination yet
+	int channel; // the note's channel as specified by the MIDI file.
+	int note; // number denotes the note being played.
+} LBFile;
+char* IntToString(char* string, int i);
+void IntToString_helper(char* string, int i, int* places);
+unsigned long long int variableQuantity(FILE* fileptr);
+void variableQuantity_helper(FILE* fileptr, unsigned long long int* value);
+void variableQuantity_helper(FILE* fileptr, unsigned long long int* value);
+unsigned long long int readBytes(unsigned char* buffer, FILE* fileptr, unsigned int num);
+LBFile** ParseModeZero(LBFile** files, FILE* midi, const unsigned int divisions, char* filename);
+LBFile* ParseModeOne(FILE* midi, const unsigned int divisions);
+const char *get_filename_ext(const char *filename);
 
 #endif	/* _MIDI_2_LINKBOT_H */
 
