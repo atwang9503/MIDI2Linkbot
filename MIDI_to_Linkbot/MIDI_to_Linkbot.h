@@ -331,25 +331,32 @@ char* PREAMBLE = \
 
 char* BODY1 = \
 "(int i) {\n"
-"   int len;\n"
-"   note_t note;\n";
+"\tint len;\n"
+"\tnote_t note;\n";
 char* BODY2 = \
-"   note_t song[] = {\n";
+"\tnote_t song[] = {\n";
 
 char* BODY3 = \
-"   };\n"
-"   len = sizeof(song) / sizeof(note_t);\n"
-"   double timePerNote = songDuration / len;\n"
-"   if (i < len) {\n"
-"   note.frequency = song[i].frequency;\n"
-"   note.duration = (int) (1.00/timePerNote);\n"
-"   } else {\n"
-"   note.frequency = -1;\n"
-"   note.duration = -1;\n"
-"   }\n"
-"   return note;\n"
+"\t};\n"
+"\tlen = sizeof(song) / sizeof(note_t);\n"
+"\tdouble timePerNote = songDuration / len;\n"
+"\tif (i < len) {\n"
+"\tnote.frequency = song[i].frequency;\n"
+"\tnote.duration = (int) (1.00/timePerNote);\n"
+"\t} else {\n"
+"\tnote.frequency = -1;\n"
+"\tnote.duration = -1;\n"
+"\t}\n"
+"\treturn note;\n"
 "}\n"
 "robot.playMelody(";
+
+char* NOTES[] = {
+	"C1", "CS1", "D1", "DS1", "E1", "F1", "FS1", "G1", "GS1", "A1", "AS1", "B1", "C2", "CS2", "D2", "DS2", "E2", "F2", "FS2", "G2", "GS2", "A2", "AS2", "B2",
+	"C3", "CS3", "D3", "DS3", "E3", "F3", "FS3", "G3", "GS3", "A3", "AS3", "B3", "C4", "CS4", "D4", "DS4", "E4", "F4", "FS4", "G4", "GS4", "A4", "AS4", "B4",
+	"C5", "CS5", "D5", "DS5", "E5", "F5", "FS5", "G5", "GS5", "A5", "AS5", "B5", "C6", "CS6", "D6", "DS6", "E6", "F6", "FS6", "G6", "GS6", "A6", "AS6", "B6",
+	"C7", "CS7", "D7", "DS7", "E7", "F7", "FS7", "G7", "GS7", "A7", "AS7", "B7", "C8", "CS8", "D8", "DS8"
+}; // Defines the notes being played as strings that go into the .chf file
 
 // FUNCTION PROTOTYPES
 typedef struct LBFile
@@ -357,19 +364,20 @@ typedef struct LBFile
 	bool editted; // false by default, set to true when parser touches this file
 	char name[80]; // holds the filename of the file
 	FILE* fileptr; // points to the file that the object writes to
-	unsigned long long int time;
+	unsigned long int time;
 	bool noteOn; // NoteOn has been written to file with no termination yet
 	int channel; // the note's channel as specified by the MIDI file.
 	int note; // number denotes the note being played.
 } LBFile;
 char* IntToString(char* string, int i);
 void IntToString_helper(char* string, int i, int* places);
-unsigned long long int variableQuantity(FILE* fileptr);
-void variableQuantity_helper(FILE* fileptr, unsigned long long int* value);
-void variableQuantity_helper(FILE* fileptr, unsigned long long int* value);
-unsigned long long int readBytes(unsigned char* buffer, FILE* fileptr, unsigned int num);
-LBFile** ParseModeZero(LBFile** files, FILE* midi, const unsigned int divisions, char* filename);
-LBFile* ParseModeOne(FILE* midi, const unsigned int divisions);
+unsigned long int variableQuantity(FILE* fileptr);
+void variableQuantity_helper(FILE* fileptr, unsigned long int* value);
+unsigned long int readBytes(unsigned char* buffer, FILE* fileptr, size_t num);
+int PlaceNote(LBFile** files, size_t startIndex, size_t filesSize, unsigned long int absoluteTime, int noteNumber, int channelNumber, const unsigned int divisions);
+int EndNote(LBFile** files, size_t startIndex, size_t filesSize, unsigned long int absoluteTime, int noteNumber, int channelNumber, const unsigned int divisions);
+size_t ParseModeZero(LBFile** files, size_t startIndex, size_t filesSize, FILE* midi, const unsigned int divisions, char* filename);
+size_t ParseModeOne(FILE* midi, size_t filesSize, const unsigned int divisions);
 const char *get_filename_ext(const char *filename);
 
 #endif	/* _MIDI_2_LINKBOT_H */
