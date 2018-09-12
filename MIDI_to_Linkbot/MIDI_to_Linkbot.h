@@ -8,6 +8,7 @@
 typedef enum {
 		msgNoteOff				= 0x80,		/* [ pitch, volume ] */
 		msgNoteOn				= 0x90,		/* [ pitch, volume ] */
+		msgKeyPressure			= 0xa0,		/* [ pitch, pressure ]*/
 		msgSetParameter			= 0xb0,		/* [ param number (CC), setting ] */
 		msgSetProgram			= 0xc0,		/* [ program ] */
 		msgChangePressure		= 0xd0,		/* [ pressure (after touch) ] */
@@ -330,7 +331,7 @@ char* PREAMBLE = \
 "note_t ";
 
 char* BODY1 = \
-"(int i) {\n"
+" (int i) {\n"
 "\tint len;\n"
 "\tnote_t note;\n";
 char* BODY2 = \
@@ -339,17 +340,15 @@ char* BODY2 = \
 char* BODY3 = \
 "\t};\n"
 "\tlen = sizeof(song) / sizeof(note_t);\n"
-"\tdouble timePerNote = songDuration / len;\n"
 "\tif (i < len) {\n"
 "\tnote.frequency = song[i].frequency;\n"
-"\tnote.duration = (int) (1.00/timePerNote);\n"
+"\tnote.duration = song[i].duration;\n"
 "\t} else {\n"
 "\tnote.frequency = -1;\n"
 "\tnote.duration = -1;\n"
 "\t}\n"
 "\treturn note;\n"
-"}\n"
-"robot.playMelody(";
+"}\n";
 
 char* NOTES[] = {
 	"C1", "CS1", "D1", "DS1", "E1", "F1", "FS1", "G1", "GS1", "A1", "AS1", "B1", "C2", "CS2", "D2", "DS2", "E2", "F2", "FS2", "G2", "GS2", "A2", "AS2", "B2",
@@ -376,8 +375,10 @@ void variableQuantity_helper(FILE* fileptr, unsigned long int* value);
 unsigned long int readBytes(unsigned char* buffer, FILE* fileptr, size_t num);
 int PlaceNote(LBFile** files, size_t startIndex, size_t filesSize, unsigned long int absoluteTime, int noteNumber, int channelNumber, const unsigned int divisions);
 int EndNote(LBFile** files, size_t startIndex, size_t filesSize, unsigned long int absoluteTime, int noteNumber, int channelNumber, const unsigned int divisions);
-size_t ParseModeZero(LBFile** files, size_t startIndex, size_t filesSize, FILE* midi, const unsigned int divisions, char* filename);
-size_t ParseModeOne(FILE* midi, size_t filesSize, const unsigned int divisions);
+long int SkipSystemCommon(FILE* midi);
+long int SkipSystemRealtime(FILE* midi);
+size_t ParseModeZero(LBFile** files, size_t startIndex, size_t filesSize, FILE* midi, const unsigned int divisions);
+size_t ParseModeOne(LBFile** files, size_t filesSize, FILE* midi, const unsigned int divisions);
 const char *get_filename_ext(const char *filename);
 
 #endif	/* _MIDI_2_LINKBOT_H */
