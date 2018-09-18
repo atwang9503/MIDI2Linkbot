@@ -1,5 +1,5 @@
 # MIDI2Linkbot
-
+A program that generates music files playable by Linkbots by reading in MIDI files.
 ## How to use
 After compiling with your favorite C compiler, place the MIDI_to_Linkbot.exe file in the folder with the .mid file you wish to generate .chf files for. The current build of the program supports format 0/1 MIDI files (most MIDI files fall in this category) which use ticks to represent delta time. SMPTE formate MIDI files are not yet supported (can be implemented later easily). 
 
