@@ -373,6 +373,7 @@ typedef struct LBFile
 {
 	bool editted; // false by default, set to true when parser touches this file
 	char name[80]; // holds the filename of the file
+	char functionName[80]; // holds the name of the function
 	FILE* fileptr; // points to the file that the object writes to
 	unsigned long int time; //  Keeps track of most recent time used in file
 	bool noteOn; // NoteOn has been written to file with no termination yet
