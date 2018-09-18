@@ -388,8 +388,8 @@ int PlaceNote(LBFile** files, size_t startIndex, size_t filesSize, unsigned long
 int EndNote(LBFile** files, size_t startIndex, size_t filesSize, unsigned long int absoluteTime, int noteNumber, int channelNumber, const unsigned int divisions);
 long int SkipSystemCommon(FILE* midi);
 long int SkipSystemRealtime(FILE* midi);
-size_t ParseModeZero(LBFile** files, size_t startIndex, size_t filesSize, FILE* midi, const unsigned int divisions);
-size_t ParseModeOne(LBFile** files, size_t filesSize, FILE* midi, const unsigned int numtrack, const unsigned int divisions);
+size_t ParseModeZero(LBFile** files, size_t startIndex, size_t filesSize, FILE* midi, const unsigned int divisions, FILE* debugPtr);
+size_t ParseModeOne(LBFile** files, size_t filesSize, FILE* midi, const unsigned int numtrack, const unsigned int divisions, FILE* debugPtr);
 const char *get_filename_ext(const char *filename);
 char* removeSpaces(char *str);
 #endif	/* _MIDI_2_LINKBOT_H */
